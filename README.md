@@ -1,2 +1,2 @@
 # Tree-Derivations
-Project from the class of Computational Mathematics.
+Project to process specific string with subtrees of derivations.
