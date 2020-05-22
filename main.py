@@ -13,6 +13,7 @@ def read_data():
     for each in lines_produc:
         grammar['Productions'][each[0]] = [each[1]]
     print(grammar)
+    print("moni, te amo")
 
 
 def main():
