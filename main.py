@@ -20,7 +20,7 @@ def read_data():
 
 
 def main():
-    result = read_data()
+    tree = read_data()
 
 
 if __name__ == '__main__':
