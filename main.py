@@ -1,6 +1,6 @@
 def read_data():
     num = input("Enter the number of the file you want to read, 1-4: ")
-    content = open("test"+num+".txt", "r").readlines()
+    content = open("tests/test"+num+".txt", "r").readlines()
     lines = [line.strip() for line in content]
     non_terminal = lines[0].split(",")
     terminal = lines[1].split(",")
@@ -16,13 +16,11 @@ def read_data():
             grammar['Productions'][each[0]].append(each[1])
         else:
             grammar['Productions'][each[0]] = [each[1]]
-    print(grammar)
-    print("moni, te amo")
-
+    return grammar
 
 def main():
     tree = read_data()
-
+    print(tree)
 
 if __name__ == '__main__':
     main()
