@@ -1,5 +1,6 @@
+  
 import re
-def comparing_to_string(index, char): 
+def matching_string_to_proccess(index, char): 
     if re.match(char, string_to_process[index]):
         return True
     else: 
@@ -7,26 +8,29 @@ def comparing_to_string(index, char):
 
 def left_most(production, dict_produc):
     i = 0
-    while(True): #Lo arreglo después cuando acabes
-        if production[i] in dict_produc.keys():
-            return production[i] 
-        if not comparing_to_string(i,production[i]): 
-            return False 
-        i+=1  
-
-def parsing(new_production, dict_production, tree): 
-    #print(new_production)
-    branch = 1 #Ahora, las keys serán las production y tendrán en ellas un diccionario con el número de ramas que contienen
-    if re.match(string_to_process, new_production): 
+    while((i+1)!=len(production) and matching_string_to_proccess(i, production[i])):     
+        i+=1
+    if production[i] in dict_produc.keys():
+        return production[i]
+    else:
+        return False
+    
+def parsing(new_production, dict_production,level,tree): 
+    if level >= limit_level:
+        return tree
+    if re.match(string_to_process, new_production):
+        tree['String_Found'] = True #Buscar forma de no utilizar este booleano. Es decir, cuando level >= limit_level, regresar un False boolean y no continuar con la recursión.
+        tree[new_production] = {}
         return tree
     non_t_symbol = left_most(new_production, dict_production)
     tree[new_production] = {}
-    if non_t_symbol != False: 
+    if non_t_symbol: 
+        branch = 1
         for each_produc in dict_production[non_t_symbol]:
             production = re.sub(non_t_symbol, each_produc, new_production)
             tree[new_production][branch]= production
             branch+=1
-            parsing(production, dict_production, tree)
+            parsing(production, dict_production, level+1,tree)
     return tree
 
 def read_data():
@@ -50,12 +54,17 @@ def read_data():
 
 def main():
     global string_to_process
+    global limit_level
     grammar = read_data()
-    print(grammar)
-    result = parsing(grammar['Start_Symbol'], grammar['Productions'], tree={})
-    for each_node in result.items():
-        print(each_node)
-
+    tree = {"String_Found": False}
+    result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree)
+    if result["String_Found"] == True:
+        for each_node in result.items():
+            print(each_node)
+    else:
+        print("Couldn't find a solution for this string. Miss you, Karen.")
+    
 if __name__ == '__main__':
-    string_to_process = "bbabaaa" 
+    string_to_process = "aaa" 
+    limit_level = 7
     main()
