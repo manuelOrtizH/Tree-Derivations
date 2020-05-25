@@ -5,11 +5,12 @@ def comparing_to_string(index, char):
     else: 
         return False
 
-def find_non_terminal(production, dict_produc):
+def left_most(production, dict_produc):
     i = 0
     while(True):
+        print("To check", production[i])
         if production[i] in dict_produc.keys():
-            #print("Found a symbol in position: {} in {} position".format(production[i], i))
+            print("Found a symbol in position: {} in {} position".format(production[i], i))
             return production[i] 
         if not comparing_to_string(i,production[i]): 
             return False 
@@ -21,7 +22,7 @@ def parsing(new_production, dict_production, tree):
     key_name = ",".join(new_production)
     if re.match(string_to_process, new_production): 
         return tree
-    non_t_symbol = find_non_terminal(new_production, dict_production)
+    non_t_symbol = left_most(new_production, dict_production)
     tree[new_production] = {}
     if non_t_symbol != False: 
         for each_produc in dict_production[non_t_symbol]:
@@ -29,6 +30,7 @@ def parsing(new_production, dict_production, tree):
             tree[new_production][branch]= production
             branch+=1
             parsing(production, dict_production, tree)
+    print(tree)
     return tree
     
 def read_data():
@@ -58,7 +60,8 @@ def main():
     print(result)
 
 
+
 if __name__ == '__main__':
-    string_to_process = "bAabaaa" 
+    string_to_process = "bbabaaa" 
     main()
 
