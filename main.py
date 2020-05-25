@@ -19,7 +19,7 @@ def parsing(new_production, dict_production,level,tree):
     if level >= limit_level:
         return tree
     if re.match(string_to_process, new_production):
-        tree['String_Found'] = True #Buscar forma de no utilizar este booleano. Es decir, cuando level >= limit_level, regresar un False boolean y no continuar con la recursión.
+        tree['String_Found'] = True 
         tree[new_production] = {}
         return tree
     non_t_symbol = left_most(new_production, dict_production)
