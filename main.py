@@ -1,33 +1,37 @@
-  
 import re
+
 def matching_string_to_proccess(index, char): 
-    if re.match(char, string_to_process[index]):
+    if string_to_process[index] == char:
         return True
     else: 
         return False
 
-def left_most(production, dict_produc):
+def left_most(production):
     i = 0
     while((i+1)!=len(production) and matching_string_to_proccess(i, production[i])):     
         i+=1
-    if production[i] in dict_produc.keys():
-        return production[i]
-    else:
-        return False
-    
+    return i
+
+def sub_non_terminal(new_string, string_to_change, index):
+    s = list(string_to_change)
+    s[index] = new_string
+    s = "".join(s)
+    return s
+
 def parsing(new_production, dict_production,level,tree): 
-    if level >= limit_level:
+    if level >= limit_of_tree:
         return tree
-    if re.match(string_to_process, new_production):
+    if string_to_process == new_production:
         tree['String_Found'] = True 
         tree[new_production] = {}
         return tree
-    non_t_symbol = left_most(new_production, dict_production)
+    index = left_most(new_production)
+    non_t_symbol = new_production[index]
     tree[new_production] = {}
-    if non_t_symbol: 
+    if non_t_symbol in dict_production.keys(): 
         branch = 1
         for each_produc in dict_production[non_t_symbol]:
-            production = re.sub(non_t_symbol, each_produc, new_production)
+            production = sub_non_terminal(each_produc, new_production, index)
             tree[new_production][branch]= production
             branch+=1
             parsing(production, dict_production, level+1,tree)
@@ -52,9 +56,10 @@ def read_data():
             grammar['Productions'][each[0]] = [each[1]]
     return grammar
 
+
 def main():
     global string_to_process
-    global limit_level
+    global limit_of_tree
     grammar = read_data()
     tree = {"String_Found": False}
     result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree)
@@ -62,9 +67,10 @@ def main():
         for each_node in result.items():
             print(each_node)
     else:
-        print("Couldn't find a solution for this string. Miss you, Karen.")
+        print("Couldn't find a solution for this string. Miss u, Karen")
+    #print(left_most("aA", grammar['Productions']))
     
 if __name__ == '__main__':
-    string_to_process = "aaa" 
-    limit_level = 7
+    string_to_process = "aaa"
+    limit_of_tree = 10
     main()
