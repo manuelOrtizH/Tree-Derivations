@@ -8,6 +8,8 @@ def matching_string_to_proccess(index, char):
 
 def left_most(production):
     i = 0
+    if len(production) > len(string_to_process):
+        return i
     while((i+1)!=len(production) and matching_string_to_proccess(i, production[i])):     
         i+=1
     return i
@@ -56,7 +58,6 @@ def read_data():
             grammar['Productions'][each[0]] = [each[1]]
     return grammar
 
-
 def main():
     global string_to_process
     global limit_of_tree
@@ -68,7 +69,7 @@ def main():
             print(each_node)
     else:
         print("Couldn't find a solution for this string. Miss u, Karen")
-    #print(left_most("aA", grammar['Productions']))
+    
     
 if __name__ == '__main__':
     string_to_process = "aaa"
