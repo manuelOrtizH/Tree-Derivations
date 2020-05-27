@@ -1,5 +1,6 @@
 import re
-
+# python3 -m pip install treelib
+from treelib import Node, Tree
 def matching_string_to_proccess(index, char): 
     if string_to_process[index] == char:
         return True
@@ -39,6 +40,12 @@ def parsing(new_production, dict_production,level,tree):
             parsing(production, dict_production, level+1,tree)
     return tree
 
+def print_tree(data, tree, node):
+    if node in data:
+        for key in range(1, len(data[node])+1):
+            tree.create_node(data[node][key], data[node][key], parent=node)
+            print_tree(data, tree, data[node][key])
+
 def read_data():
     num = input("Enter the number of the file you want to read, 1-4: ")
     content = open("tests/test"+num+".txt", "r").readlines()
@@ -64,14 +71,16 @@ def main():
     grammar = read_data()
     tree = {"String_Found": False}
     result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree)
+    t = Tree()
+    root = grammar['Start_Symbol']
     if result["String_Found"] == True:
-        for each_node in result.items():
-            print(each_node)
+        t.create_node(root, root)
+        print_tree(result, t, root)
+        t.show()
     else:
         print("Couldn't find a solution for this string. Miss u, Karen")
     
-    
 if __name__ == '__main__':
-    string_to_process = "aaa"
+    string_to_process = "bbabaaa"
     limit_of_tree = 10
     main()
