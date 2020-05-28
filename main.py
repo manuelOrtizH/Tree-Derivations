@@ -15,26 +15,16 @@ def left_most(production):
         i+=1
     return i
 
-def sub_non_terminal(new_string, string_to_change, index):
-    s = list(string_to_change)
-    s[index] = new_string
-    s = "".join(s)
-    return s
-
 def parsing(new_production, dict_production,level,tree): 
-    if level >= limit_of_tree:
-        return tree
-    if string_to_process == new_production:
-        tree['String_Found'] = True 
-        tree[new_production] = {}
+    tree[new_production] = {}
+    if string_to_process == new_production or level >= limit_of_tree:
         return tree
     index = left_most(new_production)
     non_t_symbol = new_production[index]
-    tree[new_production] = {}
     if non_t_symbol in dict_production.keys(): 
         branch = 1
         for each_produc in dict_production[non_t_symbol]:
-            production = sub_non_terminal(each_produc, new_production, index)
+            production = new_production.replace(new_production[index], each_produc)
             tree[new_production][branch]= production
             branch+=1
             parsing(production, dict_production, level+1,tree)
@@ -69,18 +59,18 @@ def main():
     global string_to_process
     global limit_of_tree
     grammar = read_data()
-    tree = {"String_Found": False}
-    result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree)
+    result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree = {})
     t = Tree()
     root = grammar['Start_Symbol']
-    if result["String_Found"] == True:
+    if string_to_process in result:
+        print("I found a solution for this string. Miss u, Karen")
         t.create_node(root, root)
         print_tree(result, t, root)
         t.show()
     else:
         print("Couldn't find a solution for this string. Miss u, Karen")
-    
+
 if __name__ == '__main__':
-    string_to_process = "bbabaaa"
+    string_to_process = "ba"
     limit_of_tree = 10
     main()
