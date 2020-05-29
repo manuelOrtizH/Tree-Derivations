@@ -31,10 +31,18 @@ def parsing(new_production, dict_production,level,tree):
     return tree
 
 def print_tree(data, tree, node):
+    added = set()
+    i = 0
     if node in data:
         for key in range(1, len(data[node])+1):
-            tree.create_node(data[node][key], data[node][key], parent=node)
-            print_tree(data, tree, data[node][key])
+            if(data[node][key] not in added):
+                tree.create_node(data[node][key], data[node][key], parent=node)
+                added.add(data[node][key])
+                print_tree(data, tree, data[node][key])
+            else:
+                tree.create_node(data[node][key], data[node][key] + str(i), parent=node)
+                print_tree(data, tree, data[node][key])
+                i += 1
 
 def read_data():
     num = input("Enter the number of the file you want to read, 1-4: ")
