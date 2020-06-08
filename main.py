@@ -1,5 +1,7 @@
+#Integrative Practice 2
+#By Manuel Ortiz Hernández-A01655515 and Mónica Lara Pineda-A01655306 at 2020
 import re
-import anytree
+from anytree import Node, RenderTree
 def matching_string_to_proccess(index, char): 
     if string_to_process[index] == char:
         return True
@@ -32,7 +34,7 @@ def parsing(new_production, dict_production,level,tree):
 def print_tree(data, node):
     if node.name in data:
         for key in range(1, len(data[node.name])+1):
-            temp = anytree.Node(data[node.name][key],parent=node)
+            temp = Node(data[node.name][key],parent=node)
             print_tree(data,temp)
 
 def read_data():
@@ -60,14 +62,14 @@ def main():
     grammar = read_data()
     result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree = {})
     if string_to_process in result:
-        print("I found a solution for this string. Miss u, Karen")
+        print("I found a solution for this string.")
         root = grammar['Start_Symbol']
-        tree = anytree.Node(root)
+        tree = Node(root)
         print_tree(result,tree)
-        for pre, fill, node in anytree.RenderTree(tree):
+        for pre, fill, node in RenderTree(tree):
             print("%s%s" % (pre, node.name))
     else:
-        print("Couldn't find a solution for this string. Miss u, Karen")
+        print("Couldn't find a solution for this string.")
 
 if __name__ == '__main__':
     string_to_process = input("Enter the string: ")
