@@ -70,6 +70,6 @@ def main():
         print("Couldn't find a solution for this string. Miss u, Karen")
 
 if __name__ == '__main__':
-    string_to_process = "ba"
-    limit_of_tree = 10
+    string_to_process = input("Enter the string: ")
+    limit_of_tree = int(input("Enter the level: "))
     main()
