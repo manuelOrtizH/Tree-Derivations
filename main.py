@@ -1,6 +1,5 @@
 import re
-# python3 -m pip install treelib
-from treelib import Node, Tree
+import anytree
 def matching_string_to_proccess(index, char): 
     if string_to_process[index] == char:
         return True
@@ -30,11 +29,11 @@ def parsing(new_production, dict_production,level,tree):
             parsing(production, dict_production, level+1,tree)
     return tree
 
-def print_tree(data, tree, node):
-    if node in data:
-        for key in range(1, len(data[node])+1):
-            tree.create_node(data[node][key], data[node][key], parent=node)
-            print_tree(data, tree, data[node][key])
+def print_tree(data, node):
+    if node.name in data:
+        for key in range(1, len(data[node.name])+1):
+            temp = anytree.Node(data[node.name][key],parent=node)
+            print_tree(data,temp)
 
 def read_data():
     num = input("Enter the number of the file you want to read, 1-4: ")
@@ -60,13 +59,13 @@ def main():
     global limit_of_tree
     grammar = read_data()
     result = parsing(grammar['Start_Symbol'], grammar['Productions'], 0, tree = {})
-    t = Tree()
-    root = grammar['Start_Symbol']
     if string_to_process in result:
         print("I found a solution for this string. Miss u, Karen")
-        t.create_node(root, root)
-        print_tree(result, t, root)
-        t.show()
+        root = grammar['Start_Symbol']
+        tree = anytree.Node(root)
+        print_tree(result,tree)
+        for pre, fill, node in anytree.RenderTree(tree):
+            print("%s%s" % (pre, node.name))
     else:
         print("Couldn't find a solution for this string. Miss u, Karen")
 
